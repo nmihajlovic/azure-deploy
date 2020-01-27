@@ -1,0 +1,35 @@
+name: Linux_Container_DOTNET_Core_Workflow
+
+on: [push]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    # checkout the repo
+    - name: 'Checkout Github Action' 
+      uses: actions/checkout@master
+    
+    - name: 'Login via Azure CLI'
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    
+    - uses: azure/docker-login@v1
+      with:
+        login-server: beetlejuice.azurecr.io
+        username: ${{ secrets.REGISTRY_USERNAME }}
+        password: ${{ secrets.REGISTRY_PASSWORD }}
+    
+    - run: |
+        docker build . -t beetlejuice.azurecr.io/azuredeploytest:${{ github.sha }}
+        docker push beetlejuice.azurecr.io/azuredeploytest:${{ github.sha }} 
+      
+    - uses: azure/webapps-container-deploy@v1
+      with:
+        app-name: 'beetlejuice-test-app'
+        images: 'beetlejuice.azurecr.io/azuredeploytest:${{ github.sha }}'
+    
+    - name: Azure logout
+      run: |
+        az logout
