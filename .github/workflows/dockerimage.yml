@@ -22,7 +22,7 @@ jobs:
         password: ${{ secrets.REGISTRY_PASSWORD }}
     
     - run: |
-        docker build . -t beetlejuice.azurecr.io/azuredeploytest:${{ github.sha }} -f .\TestApp\Dockerfile
+        docker build . -t beetlejuice.azurecr.io/azuredeploytest:${{ github.sha }} -f ./TestApp/Dockerfile
         docker push beetlejuice.azurecr.io/azuredeploytest:${{ github.sha }} 
       
     - uses: azure/webapps-container-deploy@v1
