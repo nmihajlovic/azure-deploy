@@ -25,10 +25,14 @@ jobs:
         docker build . -t beetlejuice.azurecr.io/azuredeploytest:${{ github.sha }} -f ./TestApp/Dockerfile
         docker push beetlejuice.azurecr.io/azuredeploytest:${{ github.sha }} 
       
-    - uses: azure/webapps-container-deploy@v1
+    - name: Azure WebApp Container
+      uses: Azure/webapps-container-deploy@v1
       with:
-        app-name: 'node-rnc'
-        images: 'beetlejuice.azurecr.io/azuredeploytest:${{ github.sha }}'
+        # Name of the Azure Web App
+        app-name: 'test-app'
+        # Specify the fully qualified container image(s) name. For example, 'myregistry.azurecr.io/nginx:latest' or 'python:3.7.2-alpine/'. For multi-container scenario multiple container image names can be provided (multi-line separated)
+        images: beetlejuice.azurecr.io/azuredeploytest:${{ github.sha }}
+        # Path of the Docker-Compose file. Should be a fully qualified path or relative to the default working directory. Required for multi-container scenario
     
     - name: Azure logout
       run: |
