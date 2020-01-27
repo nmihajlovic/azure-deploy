@@ -30,7 +30,7 @@ jobs:
       with:
         app-name: 'test-beetlejuice-app'
         # Specify the fully qualified container image(s) name. For example, 'myregistry.azurecr.io/nginx:latest' or 'python:3.7.2-alpine/'. For multi-container scenario multiple container image names can be provided (multi-line separated)
-        images: beetlejuice.azurecr.io/azuredeploytest:${{ github.sha }}
+        images: 'beetlejuice.azurecr.io/azuredeploytest:${{ github.sha }}'
     
     - name: Azure logout
       run: |
