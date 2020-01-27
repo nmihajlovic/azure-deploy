@@ -28,7 +28,7 @@ jobs:
     - name: Azure WebApp Container
       uses: Azure/webapps-container-deploy@v1
       with:
-        app-name: 'test-app'
+        app-name: 'test-beetlejuice-app'
         # Specify the fully qualified container image(s) name. For example, 'myregistry.azurecr.io/nginx:latest' or 'python:3.7.2-alpine/'. For multi-container scenario multiple container image names can be provided (multi-line separated)
         images: beetlejuice.azurecr.io/azuredeploytest:${{ github.sha }}
     
