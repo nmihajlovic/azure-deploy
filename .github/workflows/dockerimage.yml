@@ -27,7 +27,7 @@ jobs:
       
     - uses: azure/webapps-container-deploy@v1
       with:
-        app-name: 'beetlejuice-test-app'
+        app-name: 'node-rnc'
         images: 'beetlejuice.azurecr.io/azuredeploytest:${{ github.sha }}'
     
     - name: Azure logout
