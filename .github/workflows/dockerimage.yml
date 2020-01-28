@@ -19,16 +19,6 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
     
-    - uses: azure/docker-login@v1
-      with:
-        login-server: beetlejuice.azurecr.io
-        username: ${{ secrets.REGISTRY_USERNAME }}
-        password: ${{ secrets.REGISTRY_PASSWORD }}
-    
-    - run: |
-        docker build . -t beetlejuice.azurecr.io/azuredeploytest:${{ github.sha }} -f ./TestApp/Dockerfile
-        docker push beetlejuice.azurecr.io/azuredeploytest:${{ github.sha }} 
-    
     - name: Azure Group Create
       run: |
         az group create --name ${{ env.AZURE_GROUP_NAME }} --location westeurope 
@@ -39,6 +29,10 @@ jobs:
         login-server: beetlejuice.azurecr.io
         username: ${{ secrets.REGISTRY_USERNAME }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
+    
+    - run: |
+        docker build . -t beetlejuice.azurecr.io/azuredeploytest:${{ github.sha }} -f ./TestApp/Dockerfile
+        docker push beetlejuice.azurecr.io/azuredeploytest:${{ github.sha }} 
     
     - name: Azure WebApp Container
       uses: Azure/webapps-container-deploy@v1
