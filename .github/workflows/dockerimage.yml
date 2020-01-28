@@ -33,7 +33,7 @@ jobs:
     - name: Azure Group Create
       run: |
         az group create --name ${{ env.AZURE_GROUP_NAME }} --location westeurope 
-        az group deployment create -n ghactions -g ${{ env.AZURE_GROUP_NAME }} --template-file deployment/azure-deploy.json --parameters myWebAppName=${{ env.AZURE_WEBAPP_NAME }} servicePlanName=${{ env.AZURE_SERVICE_PLAN_NAME }} dockerImageName=azuredeploytest:${{ github.sha }} dockerRegistryUrl=beetlejuice.azurecr.io dockerRegistryUsername=${{ secrets.REGISTRY_USERNAME }} dockerRegistryPassword=${{ secrets.REGISTRY_PASSWORD }}
+        az group deployment create -n ghactions -g ${{ env.AZURE_GROUP_NAME }} --template-file deployment/azure-deploy.json --parameters myWebAppName=${{ env.AZURE_WEBAPP_NAME }} servicePlanName=${{ env.AZURE_SERVICE_PLAN_NAME }} dockerImageName=beetlejuice.azurecr.io/azuredeploytest:${{ github.sha }} dockerRegistryUrl=beetlejuice.azurecr.io dockerRegistryUsername=${{ secrets.REGISTRY_USERNAME }} dockerRegistryPassword=${{ secrets.REGISTRY_PASSWORD }}
             
     #- name: Azure WebApp Container
      # uses: Azure/webapps-container-deploy@v1
