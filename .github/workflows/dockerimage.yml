@@ -33,7 +33,13 @@ jobs:
       run: |
         az group create --name ${{ env.AZURE_GROUP_NAME }} --location westeurope 
         az group deployment create -n ghactions -g ${{ env.AZURE_GROUP_NAME }} --template-file deployment/azure-deploy.json --parameters myWebAppName=${{ env.AZURE_WEBAPP_NAME }}
-        
+            
+    - uses: azure/docker-login@v1
+      with:
+        login-server: beetlejuice.azurecr.io
+        username: ${{ secrets.REGISTRY_USERNAME }}
+        password: ${{ secrets.REGISTRY_PASSWORD }}
+    
     - name: Azure WebApp Container
       uses: Azure/webapps-container-deploy@v1
       with:
