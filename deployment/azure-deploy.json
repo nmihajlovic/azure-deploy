@@ -17,19 +17,19 @@
             "apiVersion": "2016-08-01",
             "location": "[resourceGroup().location]",
           "tags": {
-            "[concat('hidden-related:', resourceGroup().id, '/providers/Microsoft.Web/serverfarms/beetlejuicetest-plan')]": "Resource",
+            "[concat('hidden-related:', resourceGroup().id, '/providers/Microsoft.Web/serverfarms/beetlejuice-plan')]": "Resource",
             "displayName": "[parameters('myWebAppName')]"
           },
           "dependsOn": [
-            "[resourceId('Microsoft.Web/serverfarms', 'beetlejuicetest-plan')]"
+            "[resourceId('Microsoft.Web/serverfarms', 'beetlejuice-plan')]"
           ],
           "properties": {
             "name": "[parameters('myWebAppName')]",
-            "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', 'beetlejuicetest-plan')]"
+            "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', 'beetlejuice-plan')]"
           }
         },
         {
-          "name": "beetlejuicetest-plan",
+          "name": "beetlejuice-plan",
           "type": "Microsoft.Web/serverfarms",
           "apiVersion": "2018-02-01",
           "location": "[resourceGroup().location]",
@@ -38,10 +38,10 @@
               "capacity": 1
           },
           "tags": {
-              "displayName": "beetlejuicetest-plan"
+              "displayName": "beetlejuice-plan"
           },
           "properties": {
-            "name": "beetlejuicetest-plan"
+            "name": "beetlejuice-plan"
           }
         }
     ],
