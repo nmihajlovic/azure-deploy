@@ -27,13 +27,13 @@
       }
     },
     "dockerRegistryUsername": {
-      "type": "string",
+      "type": "securestring",
       "metadata": {
         "description": "Docker Registry Username"
       }
     },
     "dockerRegistryPassword": {
-      "type": "string",
+      "type": "securestring",
       "metadata": {
         "description": "Docker Registry Password"
       }
@@ -51,7 +51,7 @@
         "name": "[parameters('myWebAppName')]",
         "siteConfig": {
           "linuxFxVersion": "[concat('DOCKER|', parameters('dockerImageName'))]",
-          "alwaysOn": true,
+          "alwaysOn": false,
           "appSettings": [
             {
               "name": "WEBSITES_ENABLE_APP_SERVICE_STORAGE",
