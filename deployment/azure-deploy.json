@@ -1,0 +1,50 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "myWebAppName": {
+           "type": "string",
+           "metadata": {
+                "description": "Beetlejuice Test App"
+            }
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "name": "[parameters('myWebAppName')]",
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2016-08-01",
+            "location": "[resourceGroup().location]",
+          "tags": {
+            "[concat('hidden-related:', resourceGroup().id, '/providers/Microsoft.Web/serverfarms/beetlejuiceplan')]": "Resource",
+            "displayName": "[parameters('myWebAppName')]"
+          },
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/serverfarms', 'beetlejuiceplan')]"
+          ],
+          "properties": {
+            "name": "[parameters('myWebAppName')]",
+            "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', 'beetlejuiceplan')]"
+          }
+        },
+        {
+          "name": "beetlejuiceplan",
+          "type": "Microsoft.Web/serverfarms",
+          "apiVersion": "2018-02-01",
+          "location": "[resourceGroup().location]",
+          "sku": {
+              "name": "F1",
+              "capacity": 1
+          },
+          "tags": {
+              "displayName": "Beetlejuice plan"
+          },
+          "properties": {
+            "name": "beetlejuiceplan"
+          }
+        }
+    ],
+    "outputs": {},
+    "functions": []
+}
