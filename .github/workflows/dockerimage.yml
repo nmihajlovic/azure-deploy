@@ -31,7 +31,7 @@ jobs:
     
     - name: Azure Group Create
       run: |
-        az group create --name ${{ env.AZURE_GROUP_NAME }} --location northeurope 
+        az group create --name ${{ env.AZURE_GROUP_NAME }} --location westeurope 
         az group deployment create -n ghaction -g ${{ env.AZURE_GROUP_NAME }} --template-file deployment/azure-depLoy.json --parameters myWebAppName=${{ env.AZURE_WEBAPP_NAME }}
         
     - name: Azure WebApp Container
