@@ -1,50 +1,80 @@
 {
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
-    "parameters": {
-        "myWebAppName": {
-           "type": "string",
-           "metadata": {
-                "description": "Beetlejuice Test App"
-            }
-        }
+  "parameters": {
+    "myWebAppName": {
+      "type": "string",
+      "metadata": {
+        "description": "Web Application Name"
+      }
     },
+    "servicePlanName": {
+      "type": "string",
+      "metadata": {
+        "description": "Service Plan Name"
+      }
+    },
+    "dockerImageName": {
+      "type": "string",
+      "metadata": {
+        "description": "Docker Image Name"
+      }
+    },
+    "dockerRegistryUrl": {
+      "type": "string",
+      "metadata": {
+        "description": "Docker Registry Url"
+      }
+    },
+    "dockerRegistryUsername": {
+      "type": "string",
+      "metadata": {
+        "description": "Docker Registry Username"
+      }
+    },
+    "dockerRegistryPassword": {
+      "type": "string",
+      "metadata": {
+        "description": "Docker Registry Password"
+      }
+    }
+  },
     "variables": {},
-    "resources": [
-        {
-            "name": "[parameters('myWebAppName')]",
-            "type": "Microsoft.Web/sites",
-            "apiVersion": "2016-08-01",
-            "location": "[resourceGroup().location]",
-          "tags": {
-            "[concat('hidden-related:', resourceGroup().id, '/providers/Microsoft.Web/serverfarms/beetlejuice-plan')]": "Resource",
-            "displayName": "[parameters('myWebAppName')]"
-          },
-          "dependsOn": [
-            "[resourceId('Microsoft.Web/serverfarms', 'beetlejuice-plan')]"
-          ],
-          "properties": {
-            "name": "[parameters('myWebAppName')]",
-            "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', 'beetlejuice-plan')]"
-          }
+  "resources": [
+    {
+      "type": "Microsoft.Web/sites",
+      "apiVersion": "2016-08-01",
+      "name": "[parameters('myWebAppName')]",
+      "kind": "app,linux,container",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "name": "[parameters('myWebAppName')]",
+        "siteConfig": {
+          "linuxFxVersion": "[concat('DOCKER|', parameters('dockerImageName'))]",
+          "alwaysOn": true,
+          "appSettings": [
+            {
+              "name": "WEBSITES_ENABLE_APP_SERVICE_STORAGE",
+              "value": "false"
+            },
+            {
+              "name": "DOCKER_REGISTRY_SERVER_URL",
+              "value": "[parameters('dockerRegistryUrl')]"
+            },
+            {
+              "name": "DOCKER_REGISTRY_SERVER_USERNAME",
+              "value": "[parameters('dockerRegistryUsername')]"
+            },
+            {
+              "name": "DOCKER_REGISTRY_SERVER_PASSWORD",
+              "value": "[parameters('dockerRegistryPassword')]"
+            }
+          ]
         },
-        {
-          "name": "beetlejuice-plan",
-          "type": "Microsoft.Web/serverfarms",
-          "apiVersion": "2018-02-01",
-          "location": "[resourceGroup().location]",
-          "sku": {
-              "name": "F1",
-              "capacity": 1
-          },
-          "tags": {
-              "displayName": "beetlejuice-plan"
-          },
-          "properties": {
-            "name": "beetlejuice-plan"
-          }
-        }
-    ],
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('servicePlanName'))]"
+      }
+    }
+  ],
     "outputs": {},
     "functions": []
 }
