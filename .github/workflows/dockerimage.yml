@@ -1,15 +1,15 @@
 name: Linux_Container_DOTNET_Core_Workflow
-
   
 on: [push]
+
+env:
+  AZURE_WEBAPP_NAME: beetlejuice-2-test-app   # set this to your application's name
+  AZURE_GROUP_NAME: beetlejuice
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-    - env:
-        AZURE_GROUP_NAME: "beetlejuice"
-        AZURE_WEBAPP_NAME: "beetlejuice-2-test-app"
     # checkout the repo
     - name: 'Checkout Github Action' 
       uses: actions/checkout@master
@@ -28,11 +28,12 @@ jobs:
     - run: |
         docker build . -t beetlejuice.azurecr.io/azuredeploytest:${{ github.sha }} -f ./TestApp/Dockerfile
         docker push beetlejuice.azurecr.io/azuredeploytest:${{ github.sha }} 
-      
-    - run: |
-        az group create -n ${{ env.AZURE_GROUP_NAME }} -l eastus 
-        az group deployment create -n ghaction -g ${{ env.AZURE_GROUP_NAME }} --template-file deployment/azure-depLoy.json --parameters myWebAppName=${{ env.AZURE_WEBAPP_NAME }}
-
+    
+    - name: Azure Group Create
+      run: |
+        az group create --name ${{ env.AZURE_GROUP_NAME }} --location westeurope 
+        az group deployment create ghactions -g ${{ env.AZURE_GROUP_NAME }} --template-file deployment/azure-deploy.json --parameters myWebAppName=${{ env.AZURE_WEBAPP_NAME }}
+        
     - name: Azure WebApp Container
       uses: Azure/webapps-container-deploy@v1
       with:
