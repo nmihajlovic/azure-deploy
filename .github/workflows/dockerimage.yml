@@ -29,7 +29,10 @@ jobs:
     - run: |
         az group create -n ${{ env.AZURE_GROUP_NAME }} -l eastus 
         az group deployment create -n ghaction -g ${{ env.AZURE_GROUP_NAME }} --template-file deployment/azure-depLoy.json --parameters myWebAppName=${{ env.AZURE_WEBAPP_NAME }}
-
+    - env:
+            AZURE_GROUP_NAME: "beetlejuice"
+            AZURE_WEBAPP_NAME: "beetlejuice-2-test-app"
+        
     - name: Azure WebApp Container
       uses: Azure/webapps-container-deploy@v1
       with:
