@@ -7,9 +7,6 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-    - env:
-        AZURE_GROUP_NAME: "beetlejuice"
-        AZURE_WEBAPP_NAME: "beetlejuice-2-test-app"
     # checkout the repo
     - name: 'Checkout Github Action' 
       uses: actions/checkout@master
@@ -28,7 +25,9 @@ jobs:
     - run: |
         docker build . -t beetlejuice.azurecr.io/azuredeploytest:${{ github.sha }} -f ./TestApp/Dockerfile
         docker push beetlejuice.azurecr.io/azuredeploytest:${{ github.sha }} 
-      
+    - env:
+        AZURE_GROUP_NAME: "beetlejuice"
+        AZURE_WEBAPP_NAME: "beetlejuice-2-test-app"
     - run: |
         az group create -n ${{ env.AZURE_GROUP_NAME }} -l eastus 
         az group deployment create -n ghaction -g ${{ env.AZURE_GROUP_NAME }} --template-file deployment/azure-depLoy.json --parameters myWebAppName=${{ env.AZURE_WEBAPP_NAME }}
